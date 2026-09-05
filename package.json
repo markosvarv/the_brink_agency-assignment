@@ -4,6 +4,15 @@
   "description": "Payload CMS project with Next.js, TypeScript, and Tailwind CSS",
   "license": "MIT",
   "type": "module",
+  "author": "Markos Varvagiannis <markosvarv@gmail.com> (https://github.com/markosvarv)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/markosvarv/the_brink_agency-assignment.git"
+  },
+  "bugs": {
+    "url": "https://github.com/markosvarv/the_brink_agency-assignment/issues"
+  },
+  "homepage": "https://github.com/markosvarv/the_brink_agency-assignment#readme",
   "scripts": {
     "build": "cross-env NODE_OPTIONS=\"--no-deprecation --max-old-space-size=8000\" payload generate:importmap && next build",
     "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",
