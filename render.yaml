@@ -2,7 +2,7 @@ services:
   - type: web
     name: payload-cms-brink
     runtime: node
-    plan: starter
+    plan: free
     buildCommand: npm install && npm run build
     startCommand: npm run start
     envVars:
@@ -11,10 +11,6 @@ services:
       - key: PAYLOAD_SECRET
         generateValue: true
       - key: DATABASE_URI
-        value: file:/var/data/payload.db
+        value: file:./payload.db
       - key: NEXT_PUBLIC_SERVER_URL
         sync: false
-    disk:
-      name: payload-data
-      mountPath: /var/data
-      sizeGB: 1
