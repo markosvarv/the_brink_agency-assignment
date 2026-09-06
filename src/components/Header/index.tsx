@@ -13,7 +13,13 @@ export default async function Header() {
     console.error('Error fetching header global from Payload CMS:', err)
   }
 
-  const logoText = headerData?.logoText || 'The Brink'
+  const topBar = headerData?.topBar || {
+    showTopBar: true,
+    text: 'Emergency number – available 24/7',
+    phone: '0900 – 11 22 333',
+  }
+
+  const logoText = headerData?.logoText || 'THE BRINK'
 
   let logoImageUrl: string | null = null
   if (headerData?.logoImage && typeof headerData.logoImage === 'object' && 'url' in headerData.logoImage) {
@@ -23,23 +29,25 @@ export default async function Header() {
   const navItems = headerData?.navItems?.length
     ? headerData.navItems
     : [
-        { label: 'Home', url: '/' },
-        { label: 'Services', url: '#services' },
-        { label: 'Work', url: '#work' },
-        { label: 'About Us', url: '#about' },
-        { label: 'Blog', url: '#blog' },
+        { label: 'Service', url: '#service' },
+        { label: 'About us', url: '#about' },
+        { label: 'Careers', url: '#careers' },
       ]
 
+  const showSearch = headerData?.showSearch !== false
+
   const ctaButton = headerData?.ctaButton || {
-    label: 'Get in Touch',
+    label: 'Contact us',
     url: '#contact',
   }
 
   return (
     <HeaderClient
+      topBar={topBar}
       logoText={logoText}
       logoImageUrl={logoImageUrl}
       navItems={navItems}
+      showSearch={showSearch}
       ctaButton={ctaButton}
     />
   )

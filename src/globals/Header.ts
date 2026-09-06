@@ -7,9 +7,32 @@ export const Header: GlobalConfig = {
   },
   fields: [
     {
+      name: 'topBar',
+      type: 'group',
+      label: 'Top Announcement / Emergency Bar',
+      fields: [
+        {
+          name: 'showTopBar',
+          type: 'checkbox',
+          defaultValue: true,
+          label: 'Show Top Bar',
+        },
+        {
+          name: 'text',
+          type: 'text',
+          defaultValue: 'Emergency number – available 24/7',
+        },
+        {
+          name: 'phone',
+          type: 'text',
+          defaultValue: '0900 – 11 22 333',
+        },
+      ],
+    },
+    {
       name: 'logoText',
       type: 'text',
-      defaultValue: 'The Brink',
+      defaultValue: 'THE BRINK',
       required: true,
     },
     {
@@ -41,6 +64,12 @@ export const Header: GlobalConfig = {
       ],
     },
     {
+      name: 'showSearch',
+      type: 'checkbox',
+      label: 'Show Search Button',
+      defaultValue: true,
+    },
+    {
       name: 'ctaButton',
       type: 'group',
       label: 'Primary CTA Button',
@@ -48,7 +77,7 @@ export const Header: GlobalConfig = {
         {
           name: 'label',
           type: 'text',
-          defaultValue: 'Get in Touch',
+          defaultValue: 'Contact us',
         },
         {
           name: 'url',
