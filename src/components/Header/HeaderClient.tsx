@@ -106,15 +106,23 @@ export default function HeaderClient({
           {/* Logo (Left) */}
           <Link
             href="/"
-            className="flex items-center gap-3 text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 rounded-lg p-1 transition-colors"
+            className="flex items-center text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 rounded-lg p-1 transition-opacity hover:opacity-90"
             aria-label={`${logoText} Home`}
           >
             {logoImageUrl ? (
-              <img src={logoImageUrl} alt={logoText} className="h-8 sm:h-9 w-auto object-contain" />
+              <img
+                src={logoImageUrl}
+                alt={logoText}
+                style={{ width: '170.02px', height: '16px' }}
+                className="object-contain"
+              />
             ) : (
-              <span className="font-extrabold tracking-[0.2em] text-xl sm:text-2xl text-white uppercase">
-                {logoText}
-              </span>
+              <img
+                src="/logo.svg"
+                alt={logoText}
+                style={{ width: '170.02px', height: '16px' }}
+                className="object-contain"
+              />
             )}
           </Link>
 
