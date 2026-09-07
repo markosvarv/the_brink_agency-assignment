@@ -7,7 +7,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        manrope: ['var(--font-manrope)', 'Manrope', 'sans-serif'],
+        sans: ['Manrope', 'sans-serif'],
+        manrope: ['Manrope', 'sans-serif'],
       },
       colors: {
         brand: {
