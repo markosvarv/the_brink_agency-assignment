@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { HeroBlock } from '../blocks/Hero/config'
 
 export const Pages: CollectionConfig = {
   slug: 'pages',
@@ -22,6 +23,11 @@ export const Pages: CollectionConfig = {
       admin: {
         position: 'sidebar',
       },
+    },
+    {
+      name: 'layout',
+      type: 'blocks',
+      blocks: [HeroBlock],
     },
     {
       name: 'content',
