@@ -14,7 +14,7 @@
   },
   "homepage": "https://github.com/markosvarv/the_brink_agency-assignment#readme",
   "scripts": {
-    "build": "rm -rf .next && cross-env NODE_OPTIONS=\"--no-deprecation --max-old-space-size=8000\" payload generate:importmap && cross-env NODE_OPTIONS=\"--no-deprecation\" payload migrate && next build",
+    "build": "rm -rf .next && cross-env NODE_OPTIONS=\"--no-deprecation --max-old-space-size=8000\" payload generate:importmap && next build",
     "clean": "rm -rf .next",
     "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",
     "devsafe": "cross-env NODE_OPTIONS=--no-deprecation next dev",
@@ -23,7 +23,7 @@
     "lint": "cross-env NODE_OPTIONS=--no-deprecation eslint .",
     "migrate": "cross-env NODE_OPTIONS=--no-deprecation payload migrate",
     "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
-    "start": "cross-env NODE_OPTIONS=--no-deprecation payload migrate && cross-env NODE_OPTIONS=--no-deprecation next start"
+    "start": "cross-env NODE_OPTIONS=--no-deprecation payload migrate || true && cross-env NODE_OPTIONS=--no-deprecation next start"
   },
   "dependencies": {
     "@payloadcms/db-sqlite": "3.25.0",
