@@ -5,7 +5,8 @@ import HeaderClient from './HeaderClient'
 export default async function Header() {
   let headerData: any = null
   try {
-    const payload = await getPayload({ config })
+    const payloadConfig = await config
+    const payload = await getPayload({ config: payloadConfig })
     headerData = await payload.findGlobal({
       slug: 'header',
     })
