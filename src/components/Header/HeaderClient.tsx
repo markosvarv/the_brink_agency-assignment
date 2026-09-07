@@ -84,7 +84,7 @@ export default function HeaderClient({
       {/* 1. Top Announcement / Emergency Bar */}
       {showTopBanner && (
         <div className="w-full bg-[#08080a] border-b border-zinc-800/60 py-1.5 px-4 text-center text-xs text-zinc-400 font-normal">
-          <div className="max-w-7xl mx-auto flex items-center justify-center md:justify-end gap-2">
+          <div className="max-w-7xl mx-auto flex items-center justify-center gap-2">
             <span>{topBar?.text || 'Emergency number – available 24/7'}</span>
             <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse mx-1" aria-hidden="true" />
             {topBar?.phone && (
