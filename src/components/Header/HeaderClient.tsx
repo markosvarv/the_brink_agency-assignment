@@ -118,7 +118,7 @@ export default function HeaderClient({
               />
             ) : (
               <img
-                src="/logo.svg"
+                src="/logo.png"
                 alt={logoText}
                 style={{ width: '170.02px', height: '16px' }}
                 className="object-contain"
