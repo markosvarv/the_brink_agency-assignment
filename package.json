@@ -14,7 +14,7 @@
   },
   "homepage": "https://github.com/markosvarv/the_brink_agency-assignment#readme",
   "scripts": {
-    "build": "cross-env NODE_OPTIONS=\"--no-deprecation --max-old-space-size=8000\" payload generate:importmap && next build",
+    "build": "rm -rf .next && cross-env NODE_OPTIONS=\"--no-deprecation --max-old-space-size=8000\" payload generate:importmap && next build",
     "clean": "rm -rf .next",
     "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",
     "devsafe": "cross-env NODE_OPTIONS=--no-deprecation next dev",

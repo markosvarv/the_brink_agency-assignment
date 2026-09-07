@@ -162,6 +162,7 @@ export interface Page {
   id: number;
   title: string;
   slug: string;
+  layout?: HeroBlock[] | null;
   content?: {
     root: {
       type: string;
@@ -179,6 +180,26 @@ export interface Page {
   } | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroBlock".
+ */
+export interface HeroBlock {
+  badgeText?: string | null;
+  heading: string;
+  supportingText?: string | null;
+  ctaLabel?: string | null;
+  ctaLink?: string | null;
+  secondaryCtaLabel?: string | null;
+  secondaryCtaLink?: string | null;
+  mediaType?: ('image' | 'video') | null;
+  backgroundImage?: (number | null) | Media;
+  backgroundVideoUrl?: string | null;
+  backgroundVideo?: (number | null) | Media;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'hero';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -281,9 +302,33 @@ export interface MediaSelect<T extends boolean = true> {
 export interface PagesSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
+  layout?:
+    | T
+    | {
+        hero?: T | HeroBlockSelect<T>;
+      };
   content?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroBlock_select".
+ */
+export interface HeroBlockSelect<T extends boolean = true> {
+  badgeText?: T;
+  heading?: T;
+  supportingText?: T;
+  ctaLabel?: T;
+  ctaLink?: T;
+  secondaryCtaLabel?: T;
+  secondaryCtaLink?: T;
+  mediaType?: T;
+  backgroundImage?: T;
+  backgroundVideoUrl?: T;
+  backgroundVideo?: T;
+  id?: T;
+  blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
