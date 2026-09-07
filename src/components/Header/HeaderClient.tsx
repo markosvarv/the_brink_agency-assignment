@@ -138,9 +138,9 @@ export default function HeaderClient({
                       target={item.newTab ? '_blank' : undefined}
                       rel={item.newTab ? 'noopener noreferrer' : undefined}
                       aria-current={active ? 'page' : undefined}
-                      className={`text-sm font-medium tracking-wide transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 rounded-md px-2 py-1 ${
+                      className={`font-['Manrope',sans-serif] font-normal text-[18px] leading-[140%] tracking-[-0.02em] transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 rounded-md px-2 py-1 ${
                         active
-                          ? 'text-white font-semibold underline underline-offset-8 decoration-cyan-400 decoration-2'
+                          ? 'text-white underline underline-offset-8 decoration-cyan-400 decoration-2'
                           : 'text-zinc-300 hover:text-white'
                       }`}
                     >
@@ -233,9 +233,9 @@ export default function HeaderClient({
                       rel={item.newTab ? 'noopener noreferrer' : undefined}
                       aria-current={active ? 'page' : undefined}
                       onClick={() => setMobileMenuOpen(false)}
-                      className={`block px-4 py-3 text-base font-medium rounded-xl transition-all duration-200 ${
+                      className={`block px-4 py-3 font-['Manrope',sans-serif] font-normal text-[18px] leading-[140%] tracking-[-0.02em] rounded-xl transition-all duration-200 ${
                         active
-                          ? 'text-white bg-zinc-800 font-semibold border-l-4 border-cyan-400'
+                          ? 'text-white bg-zinc-800 border-l-4 border-cyan-400'
                           : 'text-zinc-300 hover:text-white hover:bg-zinc-900'
                       }`}
                     >
