@@ -53,10 +53,37 @@ export const HeroBlock: Block = {
       defaultValue: '/contact',
     },
     {
+      name: 'mediaType',
+      label: 'Background Media Type',
+      type: 'select',
+      defaultValue: 'image',
+      options: [
+        { label: 'Image', value: 'image' },
+        { label: 'Video (MP4 / WebM)', value: 'video' },
+      ],
+    },
+    {
       name: 'backgroundImage',
-      label: 'Background or Featured Image',
+      label: 'Background Image / Video Poster',
       type: 'upload',
       relationTo: 'media',
+    },
+    {
+      name: 'backgroundVideoUrl',
+      label: 'Background Video File / URL (MP4 / WebM)',
+      type: 'text',
+      admin: {
+        condition: (_, siblingData) => siblingData?.mediaType === 'video',
+      },
+    },
+    {
+      name: 'backgroundVideo',
+      label: 'Upload Background Video (Media Collection)',
+      type: 'upload',
+      relationTo: 'media',
+      admin: {
+        condition: (_, siblingData) => siblingData?.mediaType === 'video',
+      },
     },
   ],
 }

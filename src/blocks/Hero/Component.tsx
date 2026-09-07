@@ -9,9 +9,14 @@ export interface HeroProps {
   ctaLink?: string | null
   secondaryCtaLabel?: string | null
   secondaryCtaLink?: string | null
+  mediaType?: 'image' | 'video' | string | null
   backgroundImage?: {
     url?: string | null
     alt?: string | null
+  } | string | null
+  backgroundVideoUrl?: string | null
+  backgroundVideo?: {
+    url?: string | null
   } | string | null
 }
 
@@ -23,7 +28,10 @@ export const HeroBlockComponent: React.FC<HeroProps> = ({
   ctaLink,
   secondaryCtaLabel,
   secondaryCtaLink,
+  mediaType = 'image',
   backgroundImage,
+  backgroundVideoUrl,
+  backgroundVideo,
 }) => {
   // Extract background image URL if object or string
   const imageUrl =
@@ -33,10 +41,36 @@ export const HeroBlockComponent: React.FC<HeroProps> = ({
         ? backgroundImage
         : null
 
+  // Extract video URL if object or string
+  const videoUrl =
+    typeof backgroundVideo === 'object' && backgroundVideo?.url
+      ? backgroundVideo.url
+      : typeof backgroundVideo === 'string'
+        ? backgroundVideo
+        : backgroundVideoUrl || null
+
+  const isVideoMode = mediaType === 'video' || Boolean(videoUrl)
+
   return (
     <section className="relative w-full min-h-[80vh] lg:min-h-[85vh] flex items-center justify-center overflow-hidden bg-black text-white py-24 px-4 sm:px-6 lg:px-8">
-      {/* Background Image Layer */}
-      {imageUrl ? (
+      {/* Background Layer: Video or Image */}
+      {isVideoMode && videoUrl ? (
+        <div className="absolute inset-0 z-0">
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            poster={imageUrl || undefined}
+            className="w-full h-full object-cover filter brightness-[0.5] contrast-[1.15]"
+          >
+            <source src={videoUrl} type="video/mp4" />
+            <source src={videoUrl} type="video/webm" />
+          </video>
+          {/* Subtle vignette overlay matching Figma design */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/30 to-black/90" />
+        </div>
+      ) : imageUrl ? (
         <div className="absolute inset-0 z-0">
           <img
             src={imageUrl}
@@ -54,9 +88,7 @@ export const HeroBlockComponent: React.FC<HeroProps> = ({
         <div className="absolute inset-0 z-0 bg-neutral-950">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-zinc-900/60 via-zinc-950 to-black" />
           {/* Subtle grid mesh */}
-          <div
-            className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:32px_32px]"
-          />
+          <div className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:32px_32px]" />
         </div>
       )}
 
