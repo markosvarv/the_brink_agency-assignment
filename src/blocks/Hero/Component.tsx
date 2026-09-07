@@ -41,19 +41,18 @@ export const HeroBlockComponent: React.FC<HeroProps> = ({
 
   // Safely resolve image or video URL from Payload Media object or string path
   const resolveMediaUrl = (media: any, fallbackUrl?: string | null): string | null => {
+    if (media) {
+      if (typeof media === 'object') {
+        if (media.url) return media.url
+        if (media.filename) return `/media/${media.filename}`
+      }
+      if (typeof media === 'string' && media.trim() !== '') {
+        if (media.includes('/') || media.includes('.')) return media
+        return `/api/media/file/${media}`
+      }
+    }
     if (fallbackUrl && typeof fallbackUrl === 'string' && fallbackUrl.trim() !== '') {
       return fallbackUrl
-    }
-    if (!media) return null
-    if (typeof media === 'string') {
-      // Direct path or URL string
-      if (media.includes('/') || media.includes('.')) return media
-      // Unpopulated Payload Media ID fallback route
-      return `/api/media/file/${media}`
-    }
-    if (typeof media === 'object') {
-      if (media.url) return media.url
-      if (media.filename) return `/api/media/file/${media.filename}`
     }
     return null
   }
