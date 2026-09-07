@@ -1,4 +1,6 @@
-import React from 'react'
+'use client'
+
+import React, { useEffect, useRef } from 'react'
 import Link from 'next/link'
 
 export interface HeroProps {
@@ -12,11 +14,13 @@ export interface HeroProps {
   mediaType?: 'image' | 'video' | string | null
   backgroundImage?: {
     url?: string | null
+    filename?: string | null
     alt?: string | null
   } | string | null
   backgroundVideoUrl?: string | null
   backgroundVideo?: {
     url?: string | null
+    filename?: string | null
   } | string | null
 }
 
@@ -33,23 +37,45 @@ export const HeroBlockComponent: React.FC<HeroProps> = ({
   backgroundVideoUrl,
   backgroundVideo,
 }) => {
-  // Extract background image URL if object or string
-  const imageUrl =
-    typeof backgroundImage === 'object' && backgroundImage?.url
-      ? backgroundImage.url
-      : typeof backgroundImage === 'string'
-        ? backgroundImage
-        : null
+  const videoRef = useRef<HTMLVideoElement>(null)
 
-  // Extract video URL if object or string
-  const videoUrl =
-    typeof backgroundVideo === 'object' && backgroundVideo?.url
-      ? backgroundVideo.url
-      : typeof backgroundVideo === 'string'
-        ? backgroundVideo
-        : backgroundVideoUrl || null
+  // Safely resolve image or video URL from Payload Media object or string path
+  const resolveMediaUrl = (media: any, fallbackUrl?: string | null): string | null => {
+    if (fallbackUrl && typeof fallbackUrl === 'string' && fallbackUrl.trim() !== '') {
+      return fallbackUrl
+    }
+    if (!media) return null
+    if (typeof media === 'string') {
+      // Direct path or URL string
+      if (media.includes('/') || media.includes('.')) return media
+      // Unpopulated Payload Media ID fallback route
+      return `/api/media/file/${media}`
+    }
+    if (typeof media === 'object') {
+      if (media.url) return media.url
+      if (media.filename) return `/api/media/file/${media.filename}`
+    }
+    return null
+  }
+
+  const imageUrl = resolveMediaUrl(backgroundImage)
+  const videoUrl = resolveMediaUrl(backgroundVideo, backgroundVideoUrl)
 
   const isVideoMode = mediaType === 'video' || Boolean(videoUrl)
+
+  // Enforce browser autoplay policy (muted + playsInline + trigger play())
+  useEffect(() => {
+    if (videoRef.current && videoUrl) {
+      videoRef.current.defaultMuted = true
+      videoRef.current.muted = true
+      const playPromise = videoRef.current.play()
+      if (playPromise !== undefined) {
+        playPromise.catch((err) => {
+          console.warn('Autoplay prevented by browser policy:', err)
+        })
+      }
+    }
+  }, [videoUrl])
 
   return (
     <section className="relative w-full min-h-[80vh] lg:min-h-[85vh] flex items-center justify-center overflow-hidden bg-black text-white py-24 px-4 sm:px-6 lg:px-8">
@@ -57,16 +83,16 @@ export const HeroBlockComponent: React.FC<HeroProps> = ({
       {isVideoMode && videoUrl ? (
         <div className="absolute inset-0 z-0">
           <video
+            ref={videoRef}
+            src={videoUrl}
             autoPlay
             loop
             muted
             playsInline
+            preload="auto"
             poster={imageUrl || undefined}
             className="w-full h-full object-cover filter brightness-[0.5] contrast-[1.15]"
-          >
-            <source src={videoUrl} type="video/mp4" />
-            <source src={videoUrl} type="video/webm" />
-          </video>
+          />
           {/* Subtle vignette overlay matching Figma design */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/30 to-black/90" />
         </div>
@@ -94,14 +120,14 @@ export const HeroBlockComponent: React.FC<HeroProps> = ({
 
       {/* Hero Content Box */}
       <div className="relative z-10 max-w-5xl mx-auto text-center flex flex-col items-center justify-center gap-6">
-        {/* Category Tagline / Badge (Matching Figma: SERVICE & MAINTENANCE) */}
+        {/* Category Tagline / Badge */}
         {badgeText && (
           <div className="inline-block px-3.5 py-1 text-[12px] sm:text-[13px] tracking-[0.16em] uppercase font-normal text-zinc-300 border border-zinc-700/60 bg-zinc-900/50 backdrop-blur-sm rounded-xs">
             {badgeText}
           </div>
         )}
 
-        {/* Main Heading (Matching Figma: Clean white serif/sans typography) */}
+        {/* Main Heading */}
         {heading && (
           <h1 className="text-3xl sm:text-5xl md:text-[56px] font-normal tracking-[-0.02em] leading-[1.2] text-white text-center max-w-4xl px-2">
             {heading}
