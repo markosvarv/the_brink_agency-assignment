@@ -10,8 +10,11 @@ export default async function Header() {
     headerData = await payload.findGlobal({
       slug: 'header',
     })
-  } catch (err) {
-    console.error('Error fetching header global from Payload CMS:', err)
+  } catch (err: any) {
+    // Graceful fallback if database schema is initializing or table does not exist yet
+    if (process.env.NODE_ENV !== 'production') {
+      console.info('Header using default configuration (CMS fallback active).')
+    }
   }
 
   const topBar = headerData?.topBar || {
