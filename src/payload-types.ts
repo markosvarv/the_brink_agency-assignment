@@ -87,9 +87,11 @@ export interface Config {
   };
   globals: {
     header: Header;
+    hero: Hero;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
+    hero: HeroSelect<false> | HeroSelect<true>;
   };
   locale: null;
   user: User & {
@@ -393,6 +395,24 @@ export interface Header {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "hero".
+ */
+export interface Hero {
+  id: number;
+  badgeText?: string | null;
+  heading: string;
+  supportingText?: string | null;
+  ctaLabel?: string | null;
+  ctaLink?: string | null;
+  mediaType?: ('image' | 'video') | null;
+  backgroundImage?: (number | null) | Media;
+  backgroundVideo?: (number | null) | Media;
+  backgroundVideoUrl?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
@@ -420,6 +440,24 @@ export interface HeaderSelect<T extends boolean = true> {
         label?: T;
         url?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "hero_select".
+ */
+export interface HeroSelect<T extends boolean = true> {
+  badgeText?: T;
+  heading?: T;
+  supportingText?: T;
+  ctaLabel?: T;
+  ctaLink?: T;
+  mediaType?: T;
+  backgroundImage?: T;
+  backgroundVideo?: T;
+  backgroundVideoUrl?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

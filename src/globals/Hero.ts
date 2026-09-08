@@ -1,11 +1,10 @@
-import type { Block } from 'payload'
+import type { GlobalConfig } from 'payload'
 
-export const HeroBlock: Block = {
+export const Hero: GlobalConfig = {
   slug: 'hero',
-  interfaceName: 'HeroBlock',
-  labels: {
-    singular: 'Hero',
-    plural: 'Heroes',
+  label: 'Hero Section',
+  access: {
+    read: () => true,
   },
   fields: [
     {
@@ -37,16 +36,6 @@ export const HeroBlock: Block = {
       type: 'text',
     },
     {
-      name: 'secondaryCtaLabel',
-      label: 'Secondary CTA Label (Optional)',
-      type: 'text',
-    },
-    {
-      name: 'secondaryCtaLink',
-      label: 'Secondary CTA Link (Optional)',
-      type: 'text',
-    },
-    {
       name: 'mediaType',
       label: 'Background Media Type',
       type: 'select',
@@ -58,23 +47,23 @@ export const HeroBlock: Block = {
     },
     {
       name: 'backgroundImage',
-      label: 'Background Image / Video Poster',
+      label: 'Background or Featured Image',
       type: 'upload',
       relationTo: 'media',
     },
     {
-      name: 'backgroundVideoUrl',
-      label: 'Background Video File / URL (MP4 / WebM)',
-      type: 'text',
+      name: 'backgroundVideo',
+      label: 'Background Video (Upload to Media)',
+      type: 'upload',
+      relationTo: 'media',
       admin: {
         condition: (_, siblingData) => siblingData?.mediaType === 'video',
       },
     },
     {
-      name: 'backgroundVideo',
-      label: 'Upload Background Video (Media Collection)',
-      type: 'upload',
-      relationTo: 'media',
+      name: 'backgroundVideoUrl',
+      label: 'Background Video File / URL (MP4 / WebM)',
+      type: 'text',
       admin: {
         condition: (_, siblingData) => siblingData?.mediaType === 'video',
       },

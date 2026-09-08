@@ -79,9 +79,9 @@ export default function HeaderClient({
   const showTopBanner = topBar?.showTopBar !== false && (topBar?.text || topBar?.phone)
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-zinc-950/90 backdrop-blur-xl border-b border-zinc-800/80 transition-all duration-300">
+    <header className="absolute top-0 left-0 right-0 z-50 w-full transition-all duration-300">
       
-      {/* 1. Top Announcement / Emergency Bar */}
+      {/* 1. Top Announcement / Emergency Bar (Solid, Unblurred) */}
       {showTopBanner && (
         <div className="w-full bg-[#08080a] border-b border-zinc-800/60 py-1.5 px-4 text-center text-xs text-zinc-400 font-normal">
           <div className="max-w-7xl mx-auto flex items-center justify-center gap-2">
@@ -99,119 +99,121 @@ export default function HeaderClient({
         </div>
       )}
 
-      {/* 2. Main Navigation Bar */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
-          
-          {/* Logo (Left) */}
-          <Link
-            href="/"
-            className="flex items-center text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 rounded-lg p-1 transition-opacity hover:opacity-90"
-            aria-label={`${logoText} Home`}
-          >
-            {logoImageUrl ? (
-              <img
-                src={logoImageUrl}
-                alt={logoText}
-                style={{ width: '170.02px', height: '16px' }}
-                className="object-contain"
-              />
-            ) : (
-              <img
-                src="/logo.png"
-                alt={logoText}
-                style={{ width: '170.02px', height: '16px' }}
-                className="object-contain"
-              />
-            )}
-          </Link>
-
-          {/* Navigation Links (Center) */}
-          <nav className="hidden md:flex items-center gap-8" aria-label="Main Navigation">
-            <ul className="flex items-center gap-8">
-              {navItems.map((item, index) => {
-                const active = isLinkActive(item.url)
-                return (
-                  <li key={item.id || index}>
-                    <Link
-                      href={item.url}
-                      target={item.newTab ? '_blank' : undefined}
-                      rel={item.newTab ? 'noopener noreferrer' : undefined}
-                      aria-current={active ? 'page' : undefined}
-                      className={`font-normal text-[18px] leading-[140%] tracking-[-0.02em] transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 rounded-md px-2 py-1 ${
-                        active
-                          ? 'text-white underline underline-offset-8 decoration-cyan-400 decoration-2'
-                          : 'text-zinc-300 hover:text-white'
-                      }`}
-                    >
-                      {item.label}
-                    </Link>
-                  </li>
-                )
-              })}
-            </ul>
-          </nav>
-
-          {/* Right Utilities (Search + Contact Us Button) */}
-          <div className="hidden md:flex items-center gap-4">
-            {showSearch && (
-              <button
-                type="button"
-                onClick={() => setSearchOpen(true)}
-                className="w-10 h-10 rounded-full bg-zinc-800/80 hover:bg-zinc-700 text-zinc-300 hover:text-white flex items-center justify-center transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400"
-                aria-label="Search"
-              >
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-              </button>
-            )}
-
-            {ctaButton?.label && ctaButton?.url && (
-              <Link
-                href={ctaButton.url}
-                className="px-6 py-2.5 rounded-full bg-zinc-700/80 hover:bg-zinc-600 text-white text-sm font-medium border border-zinc-600/50 hover:border-zinc-500 transition-all shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 active:scale-95"
-              >
-                {ctaButton.label}
-              </Link>
-            )}
-          </div>
-
-          {/* Mobile Hamburger Toggle */}
-          <div className="flex md:hidden items-center gap-3">
-            {showSearch && (
-              <button
-                type="button"
-                onClick={() => setSearchOpen(true)}
-                className="w-9 h-9 rounded-full bg-zinc-800 text-zinc-300 hover:text-white flex items-center justify-center transition-colors"
-                aria-label="Search"
-              >
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-              </button>
-            )}
-
-            <button
-              type="button"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2.5 rounded-xl text-zinc-300 hover:text-white hover:bg-zinc-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400"
-              aria-expanded={mobileMenuOpen}
-              aria-controls="mobile-menu"
-              aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
+      {/* 2. Main Navigation Bar (Translucent with 20px Blur) */}
+      <div className="w-full bg-black/30 backdrop-blur-[20px] border-b border-white/10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-20">
+            
+            {/* Logo (Left) */}
+            <Link
+              href="/"
+              className="flex items-center text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 rounded-lg p-1 transition-opacity hover:opacity-90"
+              aria-label={`${logoText} Home`}
             >
-              {mobileMenuOpen ? (
-                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
+              {logoImageUrl ? (
+                <img
+                  src={logoImageUrl}
+                  alt={logoText}
+                  style={{ width: '170.02px', height: '16px' }}
+                  className="object-contain"
+                />
               ) : (
-                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
+                <img
+                  src="/logo.png"
+                  alt={logoText}
+                  style={{ width: '170.02px', height: '16px' }}
+                  className="object-contain"
+                />
               )}
-            </button>
-          </div>
+            </Link>
 
+            {/* Navigation Links (Center) */}
+            <nav className="hidden md:flex items-center gap-8" aria-label="Main Navigation">
+              <ul className="flex items-center gap-8">
+                {navItems.map((item, index) => {
+                  const active = isLinkActive(item.url)
+                  return (
+                    <li key={item.id || index}>
+                      <Link
+                        href={item.url}
+                        target={item.newTab ? '_blank' : undefined}
+                        rel={item.newTab ? 'noopener noreferrer' : undefined}
+                        aria-current={active ? 'page' : undefined}
+                        className={`font-normal text-[18px] leading-[140%] tracking-[-0.02em] transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 rounded-md px-2 py-1 ${
+                          active
+                            ? 'text-white underline underline-offset-8 decoration-cyan-400 decoration-2'
+                            : 'text-zinc-300 hover:text-white'
+                        }`}
+                      >
+                        {item.label}
+                      </Link>
+                    </li>
+                  )
+                })}
+              </ul>
+            </nav>
+
+            {/* Right Utilities (Search + Contact Us Button) */}
+            <div className="hidden md:flex items-center gap-4">
+              {showSearch && (
+                <button
+                  type="button"
+                  onClick={() => setSearchOpen(true)}
+                  className="w-10 h-10 rounded-full bg-zinc-800/80 hover:bg-zinc-700 text-zinc-300 hover:text-white flex items-center justify-center transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400"
+                  aria-label="Search"
+                >
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                </button>
+              )}
+
+              {ctaButton?.label && ctaButton?.url && (
+                <Link
+                  href={ctaButton.url}
+                  className="px-6 py-2.5 rounded-full bg-zinc-700/80 hover:bg-zinc-600 text-white text-sm font-medium border border-zinc-600/50 hover:border-zinc-500 transition-all shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 active:scale-95"
+                >
+                  {ctaButton.label}
+                </Link>
+              )}
+            </div>
+
+            {/* Mobile Hamburger Toggle */}
+            <div className="flex md:hidden items-center gap-3">
+              {showSearch && (
+                <button
+                  type="button"
+                  onClick={() => setSearchOpen(true)}
+                  className="w-9 h-9 rounded-full bg-zinc-800 text-zinc-300 hover:text-white flex items-center justify-center transition-colors"
+                  aria-label="Search"
+                >
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                </button>
+              )}
+
+              <button
+                type="button"
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="p-2.5 rounded-xl text-zinc-300 hover:text-white hover:bg-zinc-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400"
+                aria-expanded={mobileMenuOpen}
+                aria-controls="mobile-menu"
+                aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
+              >
+                {mobileMenuOpen ? (
+                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                ) : (
+                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                  </svg>
+                )}
+              </button>
+            </div>
+
+          </div>
         </div>
       </div>
 

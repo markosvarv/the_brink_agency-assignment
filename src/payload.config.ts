@@ -9,6 +9,7 @@ import { Users } from './collections/Users'
 import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
 import { Header } from './globals/Header'
+import { Hero } from './globals/Hero'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -21,7 +22,7 @@ export default buildConfig({
     },
   },
   collections: [Users, Media, Pages],
-  globals: [Header],
+  globals: [Header, Hero],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || 'cb21f8a846b0e44e0a716a90bc15fdc6',
   typescript: {

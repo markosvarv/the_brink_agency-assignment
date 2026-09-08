@@ -25,8 +25,8 @@ export interface HeroProps {
 }
 
 export const HeroBlockComponent: React.FC<HeroProps> = ({
-  badgeText = 'SERVICE & MAINTENANCE',
-  heading = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget dui.',
+  badgeText,
+  heading,
   supportingText,
   ctaLabel,
   ctaLink,
@@ -39,12 +39,15 @@ export const HeroBlockComponent: React.FC<HeroProps> = ({
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null)
 
-  // Safely resolve image or video URL from Payload Media object or string path
+  // Safely resolve image or video URL from Payload Media object, number ID, or string path
   const resolveMediaUrl = (media: any, fallbackUrl?: string | null): string | null => {
     if (media) {
-      if (typeof media === 'object') {
+      if (typeof media === 'object' && media !== null) {
         if (media.url) return media.url
         if (media.filename) return `/media/${media.filename}`
+      }
+      if (typeof media === 'number') {
+        return `/api/media/file/${media}`
       }
       if (typeof media === 'string' && media.trim() !== '') {
         if (media.includes('/') || media.includes('.')) return media
@@ -57,10 +60,12 @@ export const HeroBlockComponent: React.FC<HeroProps> = ({
     return null
   }
 
-  const imageUrl = resolveMediaUrl(backgroundImage)
-  const videoUrl = resolveMediaUrl(backgroundVideo, backgroundVideoUrl)
+  const imageUrl = resolveMediaUrl(backgroundImage) || '/hero-bg.png'
+  const rawVideoUrl = resolveMediaUrl(backgroundVideo, backgroundVideoUrl)
 
-  const isVideoMode = mediaType === 'video' || Boolean(videoUrl)
+  // video mode is enabled ONLY when mediaType is explicitly 'video' and a video URL exists
+  const isVideoMode = mediaType === 'video' && Boolean(rawVideoUrl)
+  const videoUrl = isVideoMode ? rawVideoUrl : null
 
   // Enforce browser autoplay policy (muted + playsInline + trigger play())
   useEffect(() => {
@@ -76,8 +81,17 @@ export const HeroBlockComponent: React.FC<HeroProps> = ({
     }
   }, [videoUrl])
 
+  // Figma Naming Mapping:
+  // CMS HEADING field = Small Tagline (13px, weight 400, uppercase, text-center)
+  const taglineText = heading?.trim() || badgeText?.trim() || 'SERVICE & MAINTENANCE'
+
+  // CMS SUPPORTING TEXT field = Big Headline (40px, weight 600, max-w-[800px], text-center)
+  const headlineText =
+    supportingText?.trim() ||
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget dui.'
+
   return (
-    <section className="relative w-full min-h-[80vh] lg:min-h-[85vh] flex items-center justify-center overflow-hidden bg-black text-white py-24 px-4 sm:px-6 lg:px-8">
+    <section className="relative w-full min-h-[720px] flex flex-col items-center justify-center bg-black text-white px-4 sm:px-6 lg:px-8">
       {/* Background Layer: Video or Image */}
       {isVideoMode && videoUrl ? (
         <div className="absolute inset-0 z-0">
@@ -90,10 +104,10 @@ export const HeroBlockComponent: React.FC<HeroProps> = ({
             playsInline
             preload="auto"
             poster={imageUrl || undefined}
-            className="w-full h-full object-cover filter brightness-[0.5] contrast-[1.15]"
+            className="w-full h-full object-cover object-top filter brightness-[0.5] contrast-[1.15]"
           />
           {/* Subtle vignette overlay matching Figma design */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/30 to-black/90" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/30 to-black/90 pointer-events-none" />
         </div>
       ) : imageUrl ? (
         <div className="absolute inset-0 z-0">
@@ -106,7 +120,7 @@ export const HeroBlockComponent: React.FC<HeroProps> = ({
             className="w-full h-full object-cover object-center filter brightness-[0.55] contrast-[1.15]"
           />
           {/* Subtle vignette overlay matching Figma design */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/30 to-black/90" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/30 to-black/90 pointer-events-none" />
         </div>
       ) : (
         /* Dark Metallic Machinery Graphic Background Fallback */
@@ -117,32 +131,25 @@ export const HeroBlockComponent: React.FC<HeroProps> = ({
         </div>
       )}
 
-      {/* Hero Content Box */}
-      <div className="relative z-10 max-w-5xl mx-auto text-center flex flex-col items-center justify-center gap-6">
-        {/* Category Tagline / Badge */}
-        {badgeText && (
-          <div className="inline-block px-3.5 py-1 text-[12px] sm:text-[13px] tracking-[0.16em] uppercase font-normal text-zinc-300 border border-zinc-700/60 bg-zinc-900/50 backdrop-blur-sm rounded-xs">
-            {badgeText}
+      {/* Hero Content Box - Centered Vertically & Horizontally (Figma Specs: width: 1440, gap: 32px) */}
+      <div className="relative z-20 max-w-[1440px] w-full mx-auto text-center flex flex-col items-center justify-center gap-[32px] pt-32 pb-20 my-auto">
+        {/* HEADING / TAGLINE (Figma Specs: width: 155, 13px, weight 400, line-height 120%, uppercase, text-center) */}
+        {taglineText && (
+          <div className="text-[13px] font-normal leading-[120%] tracking-wider text-center uppercase text-zinc-300 drop-shadow-md">
+            {taglineText}
           </div>
         )}
 
-        {/* Main Heading */}
-        {heading && (
-          <h1 className="text-3xl sm:text-5xl md:text-[56px] font-normal tracking-[-0.02em] leading-[1.2] text-white text-center max-w-4xl px-2">
-            {heading}
+        {/* SUPPORTING TEXT / BIG HEADLINE (Figma Specs: width: 800, 40px, font-semibold 600, line-height 120%, text-center) */}
+        {headlineText && (
+          <h1 className="w-full max-w-[800px] mx-auto text-2xl sm:text-[40px] font-semibold tracking-normal leading-[120%] text-white text-center px-2 drop-shadow-lg">
+            {headlineText}
           </h1>
-        )}
-
-        {/* Supporting Text */}
-        {supportingText && (
-          <p className="text-base sm:text-lg text-zinc-300 font-normal leading-relaxed max-w-2xl text-balance pt-2">
-            {supportingText}
-          </p>
         )}
 
         {/* Optional Action Buttons */}
         {(ctaLabel || secondaryCtaLabel) && (
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto pt-6">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto pt-2">
             {ctaLabel && ctaLink && (
               <Link
                 href={ctaLink}
