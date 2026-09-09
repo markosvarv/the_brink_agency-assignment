@@ -70,6 +70,7 @@ export interface Config {
     media: Media;
     pages: Page;
     articles: Article;
+    'contact-submissions': ContactSubmission;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -80,6 +81,7 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     pages: PagesSelect<false> | PagesSelect<true>;
     articles: ArticlesSelect<false> | ArticlesSelect<true>;
+    'contact-submissions': ContactSubmissionsSelect<false> | ContactSubmissionsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -90,10 +92,14 @@ export interface Config {
   globals: {
     header: Header;
     hero: Hero;
+    contact: Contact;
+    footer: Footer;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     hero: HeroSelect<false> | HeroSelect<true>;
+    contact: ContactSelect<false> | ContactSelect<true>;
+    footer: FooterSelect<false> | FooterSelect<true>;
   };
   locale: null;
   user: User & {
@@ -241,6 +247,26 @@ export interface Article {
   createdAt: string;
 }
 /**
+ * Inquiries submitted through the website contact form.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact-submissions".
+ */
+export interface ContactSubmission {
+  id: number;
+  name: string;
+  company?: string | null;
+  phone?: string | null;
+  email: string;
+  message: string;
+  isRead?: boolean | null;
+  confirmationEmailSent?: boolean | null;
+  dailyDigestSent?: boolean | null;
+  ipAddress?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
@@ -262,6 +288,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'articles';
         value: number | Article;
+      } | null)
+    | ({
+        relationTo: 'contact-submissions';
+        value: number | ContactSubmission;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -389,6 +419,23 @@ export interface ArticlesSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact-submissions_select".
+ */
+export interface ContactSubmissionsSelect<T extends boolean = true> {
+  name?: T;
+  company?: T;
+  phone?: T;
+  email?: T;
+  message?: T;
+  isRead?: T;
+  confirmationEmailSent?: T;
+  dailyDigestSent?: T;
+  ipAddress?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents_select".
  */
 export interface PayloadLockedDocumentsSelect<T extends boolean = true> {
@@ -468,6 +515,48 @@ export interface Hero {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact".
+ */
+export interface Contact {
+  id: number;
+  heading: string;
+  subheading?: string | null;
+  nameLabel?: string | null;
+  namePlaceholder?: string | null;
+  companyLabel?: string | null;
+  companyPlaceholder?: string | null;
+  emailLabel?: string | null;
+  emailPlaceholder?: string | null;
+  phoneLabel?: string | null;
+  phonePlaceholder?: string | null;
+  messageLabel?: string | null;
+  messagePlaceholder?: string | null;
+  submitButtonLabel?: string | null;
+  successTitle?: string | null;
+  successMessage?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "footer".
+ */
+export interface Footer {
+  id: number;
+  headline: string;
+  newsletterPrompt?: string | null;
+  newsletterPlaceholder?: string | null;
+  newsletterButtonLabel?: string | null;
+  copyrightText?: string | null;
+  privacyLabel?: string | null;
+  privacyUrl?: string | null;
+  instagramUrl?: string | null;
+  linkedinUrl?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
@@ -513,6 +602,48 @@ export interface HeroSelect<T extends boolean = true> {
   backgroundImage?: T;
   backgroundVideo?: T;
   backgroundVideoUrl?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact_select".
+ */
+export interface ContactSelect<T extends boolean = true> {
+  heading?: T;
+  subheading?: T;
+  nameLabel?: T;
+  namePlaceholder?: T;
+  companyLabel?: T;
+  companyPlaceholder?: T;
+  emailLabel?: T;
+  emailPlaceholder?: T;
+  phoneLabel?: T;
+  phonePlaceholder?: T;
+  messageLabel?: T;
+  messagePlaceholder?: T;
+  submitButtonLabel?: T;
+  successTitle?: T;
+  successMessage?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "footer_select".
+ */
+export interface FooterSelect<T extends boolean = true> {
+  headline?: T;
+  newsletterPrompt?: T;
+  newsletterPlaceholder?: T;
+  newsletterButtonLabel?: T;
+  copyrightText?: T;
+  privacyLabel?: T;
+  privacyUrl?: T;
+  instagramUrl?: T;
+  linkedinUrl?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

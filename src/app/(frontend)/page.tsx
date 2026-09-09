@@ -3,10 +3,12 @@ import { getPayload } from 'payload'
 import config from '@/payload.config'
 import HeroBlockComponent from '@/blocks/Hero/Component'
 import ArticlesBlockComponent from '@/blocks/Articles/Component'
+import ContactFormBlockComponent from '@/blocks/ContactForm/Component'
 
 export default async function HomePage() {
   let heroProps: any = null
   let articlesBlockProps: any = null
+  let contactProps: any = null
   let fetchedArticles: any[] = []
 
   try {
@@ -65,6 +67,19 @@ export default async function HomePage() {
     } catch (err) {
       console.warn('Note: Articles fetch error:', err)
     }
+
+    // 4. Fetch Contact Global from Payload CMS
+    try {
+      const contactGlobal = await payload.findGlobal({
+        slug: 'contact',
+        depth: 2,
+      })
+      if (contactGlobal) {
+        contactProps = contactGlobal
+      }
+    } catch {
+      // Contact global fallback
+    }
   } catch (err) {
     console.warn('Note: Payload CMS page fetch error:', err)
   }
@@ -94,6 +109,9 @@ export default async function HomePage() {
         buttonLink={articlesBlockProps?.buttonLink}
         articles={fetchedArticles}
       />
+
+      {/* 3. Contact Form Section matching Figma design */}
+      <ContactFormBlockComponent id="contact" {...contactProps} />
     </div>
   )
 }

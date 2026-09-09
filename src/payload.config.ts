@@ -9,8 +9,11 @@ import { Users } from './collections/Users'
 import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
 import { Articles } from './collections/Articles'
+import { ContactSubmissions } from './collections/ContactSubmissions'
 import { Header } from './globals/Header'
 import { Hero } from './globals/Hero'
+import { Contact } from './globals/Contact'
+import { Footer } from './globals/Footer'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -22,8 +25,8 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Pages, Articles],
-  globals: [Header, Hero],
+  collections: [Users, Media, Pages, Articles, ContactSubmissions],
+  globals: [Header, Hero, Contact, Footer],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || 'cb21f8a846b0e44e0a716a90bc15fdc6',
   typescript: {
