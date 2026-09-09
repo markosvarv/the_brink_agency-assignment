@@ -8,6 +8,7 @@ import sharp from 'sharp'
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
+import { Articles } from './collections/Articles'
 import { Header } from './globals/Header'
 import { Hero } from './globals/Hero'
 
@@ -21,7 +22,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Pages],
+  collections: [Users, Media, Pages, Articles],
   globals: [Header, Hero],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || 'cb21f8a846b0e44e0a716a90bc15fdc6',
@@ -32,7 +33,7 @@ export default buildConfig({
     client: {
       url: process.env.DATABASE_URI || 'file:./payload.db',
     },
-    push: true,
+    push: false,
   }),
   sharp,
 })

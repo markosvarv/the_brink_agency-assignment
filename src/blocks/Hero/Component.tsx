@@ -43,8 +43,8 @@ export const HeroBlockComponent: React.FC<HeroProps> = ({
   const resolveMediaUrl = (media: any, fallbackUrl?: string | null): string | null => {
     if (media) {
       if (typeof media === 'object' && media !== null) {
-        if (media.url) return media.url
         if (media.filename) return `/media/${media.filename}`
+        if (media.url) return media.url
       }
       if (typeof media === 'number') {
         return `/api/media/file/${media}`
@@ -91,7 +91,7 @@ export const HeroBlockComponent: React.FC<HeroProps> = ({
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget dui.'
 
   return (
-    <section className="relative w-full min-h-[720px] flex flex-col items-center justify-center bg-black text-white px-4 sm:px-6 lg:px-8">
+    <section className="relative w-full h-[850px] overflow-hidden flex flex-col items-center justify-center bg-black text-white px-4 sm:px-6 lg:px-8 border-b border-zinc-800">
       {/* Background Layer: Video or Image */}
       {isVideoMode && videoUrl ? (
         <div className="absolute inset-0 z-0">
@@ -104,10 +104,10 @@ export const HeroBlockComponent: React.FC<HeroProps> = ({
             playsInline
             preload="auto"
             poster={imageUrl || undefined}
-            className="w-full h-full object-cover object-top filter brightness-[0.5] contrast-[1.15]"
+            className="w-full h-full object-cover object-center filter brightness-[0.85]"
           />
           {/* Subtle vignette overlay matching Figma design */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/30 to-black/90 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/40 pointer-events-none" />
         </div>
       ) : imageUrl ? (
         <div className="absolute inset-0 z-0">
@@ -117,22 +117,22 @@ export const HeroBlockComponent: React.FC<HeroProps> = ({
               (typeof backgroundImage === 'object' && backgroundImage?.alt) ||
               'Hero background'
             }
-            className="w-full h-full object-cover object-center filter brightness-[0.55] contrast-[1.15]"
+            className="w-full h-full object-cover object-center filter brightness-[0.6] contrast-[1.1]"
           />
-          {/* Subtle vignette overlay matching Figma design */}
+          {/* Vignette gradient overlay matching Figma design */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/30 to-black/90 pointer-events-none" />
         </div>
       ) : (
         /* Dark Metallic Machinery Graphic Background Fallback */
         <div className="absolute inset-0 z-0 bg-neutral-950">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-zinc-900/60 via-zinc-950 to-black" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-zinc-900/80 via-zinc-950 to-black" />
           {/* Subtle grid mesh */}
-          <div className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:32px_32px]" />
+          <div className="absolute inset-0 opacity-20 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:32px_32px]" />
         </div>
       )}
 
       {/* Hero Content Box - Centered Vertically & Horizontally (Figma Specs: width: 1440, gap: 32px) */}
-      <div className="relative z-20 max-w-[1440px] w-full mx-auto text-center flex flex-col items-center justify-center gap-[32px] pt-32 pb-20 my-auto">
+      <div className="relative z-20 max-w-[1440px] w-full mx-auto text-center flex flex-col items-center justify-center gap-[32px] pt-32 pb-20 my-auto px-4">
         {/* HEADING / TAGLINE (Figma Specs: width: 155, 13px, weight 400, line-height 120%, uppercase, text-center) */}
         {taglineText && (
           <div className="text-[13px] font-normal leading-[120%] tracking-wider text-center uppercase text-zinc-300 drop-shadow-md">
@@ -142,7 +142,7 @@ export const HeroBlockComponent: React.FC<HeroProps> = ({
 
         {/* SUPPORTING TEXT / BIG HEADLINE (Figma Specs: width: 800, 40px, font-semibold 600, line-height 120%, text-center) */}
         {headlineText && (
-          <h1 className="w-full max-w-[800px] mx-auto text-2xl sm:text-[40px] font-semibold tracking-normal leading-[120%] text-white text-center px-2 drop-shadow-lg">
+          <h1 className="w-full max-w-[800px] mx-auto text-2xl sm:text-[40px] font-semibold tracking-normal leading-[120%] text-white text-center drop-shadow-2xl">
             {headlineText}
           </h1>
         )}
