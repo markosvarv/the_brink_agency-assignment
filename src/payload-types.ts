@@ -203,7 +203,7 @@ export interface HeroBlock {
   ctaLink?: string | null;
   secondaryCtaLabel?: string | null;
   secondaryCtaLink?: string | null;
-  mediaType?: ('image' | 'video') | null;
+  mediaType?: ('video' | 'image') | null;
   backgroundImage?: (number | null) | Media;
   backgroundVideoUrl?: string | null;
   backgroundVideo?: (number | null) | Media;
@@ -506,7 +506,7 @@ export interface Hero {
   supportingText?: string | null;
   ctaLabel?: string | null;
   ctaLink?: string | null;
-  mediaType?: ('image' | 'video') | null;
+  mediaType?: ('video' | 'image') | null;
   backgroundImage?: (number | null) | Media;
   backgroundVideo?: (number | null) | Media;
   backgroundVideoUrl?: string | null;

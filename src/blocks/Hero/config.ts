@@ -50,10 +50,10 @@ export const HeroBlock: Block = {
       name: 'mediaType',
       label: 'Background Media Type',
       type: 'select',
-      defaultValue: 'image',
+      defaultValue: 'video',
       options: [
-        { label: 'Image', value: 'image' },
         { label: 'Video (MP4 / WebM)', value: 'video' },
+        { label: 'Image', value: 'image' },
       ],
     },
     {
@@ -66,6 +66,7 @@ export const HeroBlock: Block = {
       name: 'backgroundVideoUrl',
       label: 'Background Video File / URL (MP4 / WebM)',
       type: 'text',
+      defaultValue: '/ZWRT.mp4',
       admin: {
         condition: (_, siblingData) => siblingData?.mediaType === 'video',
       },

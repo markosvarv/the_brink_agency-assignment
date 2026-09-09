@@ -95,10 +95,10 @@ export default async function HomePage() {
         ctaLink={heroProps?.ctaLink}
         secondaryCtaLabel={heroProps?.secondaryCtaLabel}
         secondaryCtaLink={heroProps?.secondaryCtaLink}
-        mediaType={heroProps?.mediaType}
+        mediaType={heroProps?.mediaType || 'video'}
         backgroundImage={heroProps?.backgroundImage}
         backgroundVideo={heroProps?.backgroundVideo}
-        backgroundVideoUrl={heroProps?.backgroundVideoUrl}
+        backgroundVideoUrl={heroProps?.backgroundVideoUrl || '/ZWRT.mp4'}
       />
 
       {/* 2. Dynamic Articles Section Component connected to Payload CMS */}

@@ -32,9 +32,9 @@ export const HeroBlockComponent: React.FC<HeroProps> = ({
   ctaLink,
   secondaryCtaLabel,
   secondaryCtaLink,
-  mediaType = 'image',
+  mediaType = 'video',
   backgroundImage,
-  backgroundVideoUrl,
+  backgroundVideoUrl = '/ZWRT.mp4',
   backgroundVideo,
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null)
@@ -61,10 +61,10 @@ export const HeroBlockComponent: React.FC<HeroProps> = ({
   }
 
   const imageUrl = resolveMediaUrl(backgroundImage) || '/hero-bg.png'
-  const rawVideoUrl = resolveMediaUrl(backgroundVideo, backgroundVideoUrl)
+  const rawVideoUrl = resolveMediaUrl(backgroundVideo, backgroundVideoUrl) || '/ZWRT.mp4'
 
-  // video mode is enabled ONLY when mediaType is explicitly 'video' and a video URL exists
-  const isVideoMode = mediaType === 'video' && Boolean(rawVideoUrl)
+  // Video mode is enabled by default unless mediaType is explicitly 'image'
+  const isVideoMode = (mediaType ? mediaType === 'video' : true) && Boolean(rawVideoUrl)
   const videoUrl = isVideoMode ? rawVideoUrl : null
 
   // Enforce browser autoplay policy (muted + playsInline + trigger play())
