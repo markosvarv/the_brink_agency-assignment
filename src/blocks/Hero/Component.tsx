@@ -60,7 +60,7 @@ export const HeroBlockComponent: React.FC<HeroProps> = ({
     return null
   }
 
-  const imageUrl = resolveMediaUrl(backgroundImage) || '/hero-bg.png'
+  const imageUrl = resolveMediaUrl(backgroundImage)
   const rawVideoUrl = resolveMediaUrl(backgroundVideo, backgroundVideoUrl) || '/ZWRT.mp4'
 
   // Video mode is enabled by default unless mediaType is explicitly 'image'
