@@ -81,14 +81,30 @@ export const HeroBlockComponent: React.FC<HeroProps> = ({
     }
   }, [videoUrl])
 
-  // Figma Naming Mapping:
-  // CMS HEADING field = Small Tagline (13px, weight 400, uppercase, text-center)
-  const taglineText = heading?.trim() || badgeText?.trim() || 'SERVICE & MAINTENANCE'
+  // Default texts matching Figma design:
+  // Tagline: "SERVICE & MANTAINANCE" (13px, weight 400, uppercase, text-center)
+  // Headline: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget dui." (40px, weight 600, max-w-[800px])
+  const defaultTagline = 'SERVICE & MANTAINANCE'
+  const defaultHeadline = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget dui.'
 
-  // CMS SUPPORTING TEXT field = Big Headline (40px, weight 600, max-w-[800px], text-center)
-  const headlineText =
-    supportingText?.trim() ||
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget dui.'
+  let taglineText = defaultTagline
+  let headlineText = defaultHeadline
+
+  if (badgeText?.trim()) {
+    taglineText = badgeText.trim()
+    headlineText = heading?.trim() || supportingText?.trim() || defaultHeadline
+  } else if (heading?.trim() && supportingText?.trim()) {
+    taglineText = heading.trim()
+    headlineText = supportingText.trim()
+  } else if (heading?.trim()) {
+    if (heading.trim().toUpperCase().includes('SERVICE')) {
+      taglineText = heading.trim()
+    } else {
+      headlineText = heading.trim()
+    }
+  } else if (supportingText?.trim()) {
+    headlineText = supportingText.trim()
+  }
 
   return (
     <section className="relative w-full h-[850px] overflow-hidden flex flex-col items-center justify-center bg-black text-white px-4 sm:px-6 lg:px-8 border-b border-zinc-800">

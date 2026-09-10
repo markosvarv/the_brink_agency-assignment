@@ -11,7 +11,7 @@ export const Hero: GlobalConfig = {
       name: 'badgeText',
       label: 'Badge / Tagline (Optional)',
       type: 'text',
-      defaultValue: 'SERVICE & MAINTENANCE',
+      defaultValue: 'SERVICE & MANTAINANCE',
     },
     {
       name: 'heading',

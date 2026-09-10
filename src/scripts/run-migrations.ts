@@ -99,6 +99,16 @@ async function runMigrations() {
     console.warn('[MIGRATION] Note on rels verification:', err)
   }
 
+  // 5. Ensure Hero global default text matches Figma design
+  try {
+    await payload.db.drizzle.run(sql.raw(`
+      UPDATE \`hero\`
+      SET \`badge_text\` = 'SERVICE & MANTAINANCE',
+          \`heading\` = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget dui.'
+      WHERE \`id\` = 1 AND (\`badge_text\` IS NULL OR \`badge_text\` = '' OR \`badge_text\` = 'SERVICE & MAINTENANCE');
+    `))
+  } catch {}
+
   console.log('[MIGRATION] Database migrations complete!')
   process.exit(0)
 }

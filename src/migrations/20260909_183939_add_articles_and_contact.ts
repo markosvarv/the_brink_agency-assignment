@@ -129,7 +129,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   // 8. Seed default records if tables are empty
   await safeRun(db, sql`
     INSERT INTO \`hero\` (id, badge_text, heading, supporting_text, cta_label, cta_link, media_type, background_video_url)
-    SELECT 1, 'SERVICE & MAINTENANCE', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget dui.', 'High quality industrial services and emergency maintenance available 24/7 across all regions.', 'Contact us', '#contact', 'video', '/ZWRT.mp4'
+    SELECT 1, 'SERVICE & MANTAINANCE', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget dui.', '', '', '', 'video', '/ZWRT.mp4'
     WHERE NOT EXISTS (SELECT 1 FROM \`hero\` WHERE id = 1);
   `)
 
