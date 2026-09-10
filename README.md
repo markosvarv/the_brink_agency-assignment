@@ -4,6 +4,13 @@ A modern, full-stack website and content management platform built for **The Bri
 
 ---
 
+## Live Deployment
+
+- **Live Website**: [https://payload-cms-brink.onrender.com/](https://payload-cms-brink.onrender.com/)
+- **Payload Admin Panel**: [https://payload-cms-brink.onrender.com/admin](https://payload-cms-brink.onrender.com/admin)
+
+---
+
 ## Features
 
 - **Dynamic Frontend**: Modern, responsive landing page styled with Tailwind CSS, featuring an interactive hero section, video background, dynamic articles grid, and contact block.
@@ -105,7 +112,7 @@ To apply migrations manually:
 npm run migrate
 ```
 
-*(Note: Migrations run automatically when starting the production build via `npm run start`.)*
+*(Note: Migrations run automatically whenever you execute `npm run dev` or `npm run start`, but can also be executed manually at any time via `npm run migrate`.)*
 
 ### 2. Start the Development Server
 
@@ -152,9 +159,8 @@ The Payload CMS administrative dashboard is served alongside the Next.js applica
 ### 1. Open the Admin Panel
 
 Navigate to:
-```
-http://localhost:3000/admin
-```
+- **Local Development**: [http://localhost:3000/admin](http://localhost:3000/admin)
+- **Production (Render)**: [https://payload-cms-brink.onrender.com/admin](https://payload-cms-brink.onrender.com/admin)
 
 ### 2. Create the Initial Admin User
 

@@ -16,7 +16,7 @@
   "scripts": {
     "build": "rm -rf .next && cross-env NODE_OPTIONS=\"--no-deprecation --max-old-space-size=8000\" payload generate:importmap && next build",
     "clean": "rm -rf .next",
-    "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",
+    "dev": "cross-env NODE_OPTIONS=--no-deprecation tsx src/scripts/run-migrations.ts && cross-env NODE_OPTIONS=--no-deprecation next dev",
     "devsafe": "cross-env NODE_OPTIONS=--no-deprecation next dev",
     "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
     "generate:types": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",
