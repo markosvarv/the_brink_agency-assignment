@@ -159,7 +159,7 @@ export default function HeaderClient({
                 <button
                   type="button"
                   onClick={() => setSearchOpen(true)}
-                  className="w-10 h-10 rounded-full bg-zinc-800/80 hover:bg-zinc-700 text-zinc-300 hover:text-white flex items-center justify-center transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400"
+                  className="w-10 h-10 rounded-full bg-zinc-700/90 hover:bg-zinc-600 text-white flex items-center justify-center transition-all shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400"
                   aria-label="Search"
                 >
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -171,7 +171,7 @@ export default function HeaderClient({
               {ctaButton?.label && ctaButton?.url && (
                 <Link
                   href={ctaButton.url}
-                  className="px-6 py-2.5 rounded-full bg-zinc-700/80 hover:bg-zinc-600 text-white text-sm font-medium border border-zinc-600/50 hover:border-zinc-500 transition-all shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 active:scale-95"
+                  className="px-6 py-2.5 rounded-full bg-zinc-600/90 hover:bg-zinc-500 text-white text-sm font-medium border border-zinc-500/50 hover:border-zinc-400 transition-all shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 active:scale-95"
                 >
                   {ctaButton.label}
                 </Link>
@@ -184,7 +184,7 @@ export default function HeaderClient({
                 <button
                   type="button"
                   onClick={() => setSearchOpen(true)}
-                  className="w-9 h-9 rounded-full bg-zinc-800 text-zinc-300 hover:text-white flex items-center justify-center transition-colors"
+                  className="w-9 h-9 rounded-full bg-zinc-700 text-white hover:bg-zinc-600 flex items-center justify-center transition-colors"
                   aria-label="Search"
                 >
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

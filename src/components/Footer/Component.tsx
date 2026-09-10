@@ -48,7 +48,9 @@ export const FooterComponent: React.FC<FooterProps> = ({
   }
 
   return (
-    <footer className="w-full bg-black text-white border-t border-zinc-900 pt-20 pb-16 px-4 sm:px-6 lg:px-12">
+    <footer className="relative w-full bg-black text-white pt-20 pb-16 px-4 sm:px-6 lg:px-12">
+      {/* Colorful Gradient Divider Line */}
+      <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#0085FF] via-[#00C2FF] via-[#00E599] to-[#22C55E]" />
       <div className="max-w-7xl mx-auto space-y-20 lg:space-y-24">
         
         {/* Row 1: Headline (Left) & Newsletter Signup (Right) */}
