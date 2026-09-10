@@ -94,6 +94,36 @@ async function runMigrations() {
       await payload.db.drizzle.run(sql.raw(`CREATE INDEX IF NOT EXISTS \`payload_locked_documents_rels_contact_submissions_id_idx\` ON \`payload_locked_documents_rels\` (\`contact_submissions_id\`);`))
     } catch {}
 
+    // Ensure users_sessions exists (needed for Payload user sessions)
+    try {
+      await payload.db.drizzle.run(sql.raw(`
+        CREATE TABLE IF NOT EXISTS \`users_sessions\` (
+          \`_order\` integer NOT NULL,
+          \`_parent_id\` integer NOT NULL,
+          \`id\` text PRIMARY KEY NOT NULL,
+          \`created_at\` text DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')) NOT NULL,
+          \`expires_at\` text NOT NULL,
+          FOREIGN KEY (\`_parent_id\`) REFERENCES \`users\`(\`id\`) ON UPDATE no action ON DELETE cascade
+        );
+      `))
+      await payload.db.drizzle.run(sql.raw(`CREATE INDEX IF NOT EXISTS \`users_sessions_order_idx\` ON \`users_sessions\` (\`_order\`);`))
+      await payload.db.drizzle.run(sql.raw(`CREATE INDEX IF NOT EXISTS \`users_sessions_parent_id_idx\` ON \`users_sessions\` (\`_parent_id\`);`))
+    } catch {}
+
+    // Ensure payload_kv exists (needed for Payload key-value store)
+    try {
+      await payload.db.drizzle.run(sql.raw(`
+        CREATE TABLE IF NOT EXISTS \`payload_kv\` (
+          \`id\` integer PRIMARY KEY NOT NULL,
+          \`key\` text NOT NULL,
+          \`data\` text,
+          \`updated_at\` text DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')) NOT NULL,
+          \`created_at\` text DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')) NOT NULL
+        );
+      `))
+      await payload.db.drizzle.run(sql.raw(`CREATE UNIQUE INDEX IF NOT EXISTS \`payload_kv_key_idx\` ON \`payload_kv\` (\`key\`);`))
+    } catch {}
+
     console.log('[MIGRATION] Database relationship columns verified!')
   } catch (err) {
     console.warn('[MIGRATION] Note on rels verification:', err)
