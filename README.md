@@ -1,67 +1,212 @@
-# Payload Blank Template
+# The Brink Agency — Web Platform & Payload CMS
 
-This template comes configured with the bare minimum to get started on anything you need.
+A modern, full-stack website and content management platform built for **The Brink Agency**. Powered by **Next.js 15 (App Router)**, **Payload CMS 3.x**, **TypeScript**, **Tailwind CSS**, and an embedded **SQLite** database.
 
-## Quick start
+---
 
-This template can be deployed directly from our Cloud hosting and it will setup MongoDB and cloud S3 object storage for media.
+## Features
 
-## Quick Start - local setup
+- **Dynamic Frontend**: Modern, responsive landing page styled with Tailwind CSS, featuring an interactive hero section, video background, dynamic articles grid, and contact block.
+- **Payload CMS 3.x Admin**: Headless CMS with Lexical rich-text editing, media uploads, and granular content management.
+- **Custom Collections & Globals**:
+  - **Collections**: `Articles`, `ContactSubmissions`, `Pages`, `Media`, and `Users`.
+  - **Globals**: `Header`, `Hero`, `Contact`, and `Footer`.
+- **Inquiry Handling & Email Notifications**: Automated confirmation email dispatched upon contact form submission with local audit logging to `logs/emails/`.
+- **Daily Digest Cron API**: Scheduled endpoint (`/api/cron/daily-digest`) aggregating new customer inquiries and notifying the team.
+- **Zero-Config Database**: Bundled SQLite database (`payload.db`) with automated startup migrations.
 
-To spin up this template locally, follow these steps:
+---
 
-### Clone
+## Prerequisites
 
-After you click the `Deploy` button above, you'll want to have standalone copy of this repo on your machine. If you've already cloned this repo, skip to [Development](#development).
+Before setting up the project, ensure your environment meets the following requirements:
 
-### Development
+- **Node.js**: `v18.20.0` or higher (`v20.x` recommended; Node `20.18.0` is used in production)
+- **Package Manager**: `npm` (v9+ or v10+), `pnpm`, or `yarn`
+- **Git**: For cloning and version control
 
-1. First [clone the repo](#clone) if you have not done so already
-2. `cd my-project && cp .env.example .env` to copy the example environment variables. You'll need to add the `MONGODB_URL` from your Cloud project to your `.env` if you want to use S3 storage and the MongoDB database that was created for you.
+---
 
-3. `pnpm install && pnpm dev` to install dependencies and start the dev server
-4. open `http://localhost:3000` to open the app in your browser
+## Project Setup Instructions
 
-That's it! Changes made in `./src` will be reflected in your app. Follow the on-screen instructions to login and create your first admin user. Then check out [Production](#production) once you're ready to build and serve your app, and [Deployment](#deployment) when you're ready to go live.
+Follow these steps to set up the project locally from scratch:
 
-#### Docker (Optional)
+### 1. Clone the Repository
 
-If you prefer to use Docker for local development instead of a local MongoDB instance, the provided docker-compose.yml file can be used.
+```bash
+git clone https://github.com/markosvarv/the_brink_agency-assignment.git
+cd the_brink_agency-assignment
+```
 
-To do so, follow these steps:
+### 2. Install Dependencies
 
-- Modify the `MONGODB_URL` in your `.env` file to `mongodb://127.0.0.1/<dbname>`
-- Modify the `docker-compose.yml` file's `MONGODB_URL` to match the above `<dbname>`
-- Run `docker-compose up` to start the database, optionally pass `-d` to run in the background.
+Install all project dependencies using npm:
 
-## How it works
+```bash
+npm install
+```
 
-The Payload config is tailored specifically to the needs of most websites. It is pre-configured in the following ways:
+*(Alternatively, you can use `pnpm install` or `yarn install`.)*
 
-### Collections
+### 3. Configure Environment Variables
 
-See the [Collections](https://payloadcms.com/docs/configuration/collections) docs for details on how to extend this functionality.
+Create a local `.env` file by copying the provided example template:
 
-- #### Users (Authentication)
+```bash
+cp .env.example .env
+```
 
-  Users are auth-enabled collections that have access to the admin panel.
+Open `.env` in your editor and provide a unique `PAYLOAD_SECRET`. You can generate a cryptographically strong secret via:
 
-  For additional help, see the official [Auth Example](https://github.com/payloadcms/payload/tree/main/examples/auth) or the [Authentication](https://payloadcms.com/docs/authentication/overview#authentication-overview) docs.
+```bash
+openssl rand -hex 32
+```
 
-- #### Media
+> [!WARNING]
+> **Security Reminder**: Never commit your `.env` file, real passwords, secret keys, or API tokens to the repository. The `.gitignore` file is already configured to exclude `.env` and local database files.
 
-  This is the uploads enabled collection. It features pre-configured sizes, focal point and manual resizing to help you manage your pictures.
+---
 
-### Docker
+## Required Environment Variables
 
-Alternatively, you can use [Docker](https://www.docker.com) to spin up this template locally. To do so, follow these steps:
+The application reads configuration values from environment variables. Below is the full specification:
 
-1. Follow [steps 1 and 2 from above](#development), the docker-compose file will automatically use the `.env` file in your project root
-1. Next run `docker-compose up`
-1. Follow [steps 4 and 5 from above](#development) to login and create your first admin user
+| Variable | Required | Default Value | Description |
+| :--- | :---: | :--- | :--- |
+| `PAYLOAD_SECRET` | **Yes** | — | A random secret string used by Payload CMS to encrypt session cookies and sign authentication tokens. |
+| `DATABASE_URI` | No | `file:./payload.db` | The connection URI for the SQLite database adapter. In local development, defaults to `file:./payload.db`. |
+| `NEXT_PUBLIC_SERVER_URL` | No | `http://localhost:3000` | The public base URL of the web server. Used for canonical URLs and absolute asset links. |
+| `CRON_SECRET` | No | — | Optional secret token to protect the `/api/cron/daily-digest` endpoint. When set, requests must pass this secret via `Authorization: Bearer <CRON_SECRET>` or `?secret=<CRON_SECRET>`. |
+| `DAILY_DIGEST_EMAIL` | No | `vacancy@example.com` | The destination email address for daily contact inquiries digest reports. |
+| `SMTP_FROM` | No | `The Brink <noreply@thebrink.agency>` | The sender display name and email address for system-generated notification emails. |
 
-That's it! The Docker instance will help you get up and running quickly while also standardizing the development environment across your teams.
+### Example `.env` Configuration
 
-## Questions
+```env
+PAYLOAD_SECRET=e7b4c6e9a18451c0989f664a781bcf7623910c24db9470c1e405a396263e8a4d
+DATABASE_URI=file:./payload.db
+NEXT_PUBLIC_SERVER_URL=http://localhost:3000
+CRON_SECRET=sample_dev_cron_secret
+DAILY_DIGEST_EMAIL=vacancy@example.com
+SMTP_FROM="The Brink <noreply@thebrink.agency>"
+```
 
-If you have any issues or questions, reach out to us on [Discord](https://discord.com/invite/payload) or start a [GitHub discussion](https://github.com/payloadcms/payload/discussions).
+---
+
+## Instructions for Running the Project Locally
+
+### 1. Database Migrations
+
+The project includes an automated database migration runner (`src/scripts/run-migrations.ts`) ensuring all tables, columns, and relationships are properly configured.
+
+To apply migrations manually:
+
+```bash
+npm run migrate
+```
+
+*(Note: Migrations run automatically when starting the production build via `npm run start`.)*
+
+### 2. Start the Development Server
+
+To launch the Next.js and Payload CMS development server with hot reload:
+
+```bash
+npm run dev
+```
+
+Once started, open your browser and navigate to:
+- **Frontend Website**: [http://localhost:3000](http://localhost:3000)
+- **Payload Admin Panel**: [http://localhost:3000/admin](http://localhost:3000/admin)
+
+### 3. Build & Run for Production
+
+To test or execute the production build locally:
+
+```bash
+# Generate import maps and build the Next.js app
+npm run build
+
+# Run startup migrations and serve the production app
+npm run start
+```
+
+### Available NPM Scripts
+
+| Command | Description |
+| :--- | :--- |
+| `npm run dev` | Starts the local development server with hot module reloading. |
+| `npm run build` | Cleans `.next`, generates Payload import maps, and produces an optimized production build. |
+| `npm run start` | Executes pending SQLite migrations and starts the production server. |
+| `npm run migrate` | Manually executes pending SQLite migrations using tsx. |
+| `npm run lint` | Runs ESLint across TypeScript and React source files. |
+| `npm run generate:types` | Regenerates TypeScript types (`src/payload-types.ts`) based on Payload collections and globals. |
+| `npm run generate:importmap` | Generates component import maps for Payload CMS admin UI. |
+
+---
+
+## Instructions for Accessing the Payload Admin Panel
+
+The Payload CMS administrative dashboard is served alongside the Next.js application.
+
+### 1. Open the Admin Panel
+
+Navigate to:
+```
+http://localhost:3000/admin
+```
+
+### 2. Create the Initial Admin User
+
+If you are running the project with a fresh database:
+1. When visiting `http://localhost:3000/admin`, Payload will automatically detect that no users exist and redirect you to the **Create First User** screen (`/admin/create-first-user`).
+2. Enter your desired administrator credentials:
+   - **Email**: Enter your email address (e.g. `admin@thebrink.agency`).
+   - **Password**: Choose a secure password (must be at least 8 characters).
+   - **Confirm Password**: Re-type your password.
+3. Click **Create** to complete setup.
+
+### 3. Log In
+
+If an admin user has already been registered:
+1. Navigate to [http://localhost:3000/admin](http://localhost:3000/admin).
+2. Enter your registered **Email** and **Password**.
+3. Click **Login**.
+
+### 4. Admin Panel Overview
+
+Once logged in, you can manage all site content through the sidebar:
+
+- **Collections**:
+  - **Articles**: Create, publish, draft, and edit blog posts/news with rich text (Lexical), excerpt, cover image, and metadata.
+  - **Contact Submissions**: View and monitor inquiries submitted by visitors through the landing page contact form.
+  - **Pages**: Manage custom page configurations and layouts.
+  - **Media**: Upload, inspect, and organize image assets and video files.
+  - **Users**: Manage administrative users and roles.
+- **Globals**:
+  - **Header**: Configure navigation links and brand elements.
+  - **Hero**: Manage homepage hero title, description, and background video/poster.
+  - **Contact**: Configure contact section labels, addresses, telephone numbers, and 24/7 emergency dispatch info.
+  - **Footer**: Update footer links, social media channels, and copyright notice.
+
+---
+
+## Additional Features & Testing
+
+### Contact Form & Email Notifications
+- When a user submits the contact form on the frontend (`/`), a submission document is created in the `contact-submissions` collection.
+- An automated confirmation email is immediately generated and dispatched. In local development, email payloads are logged directly to the terminal and appended to `logs/emails/sent-emails.jsonl`.
+
+### Daily Digest Cron Job
+- Inquiries can be aggregated into a daily digest and dispatched to `DAILY_DIGEST_EMAIL`.
+- Trigger the endpoint locally:
+  ```bash
+  curl -X POST http://localhost:3000/api/cron/daily-digest
+  ```
+  *(If `CRON_SECRET` is configured in your `.env`, provide `-H "Authorization: Bearer <CRON_SECRET>"` or append `?secret=<CRON_SECRET>`.)*
+
+---
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
