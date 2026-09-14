@@ -48,9 +48,10 @@ export async function sendEmail({
   console.log(`From:    ${from}`)
   console.log(`Subject: ${subject}`)
   console.log(`Time:    ${logEntry.timestamp}`)
+  console.log(`🔗 Preview in Browser: http://localhost:3000/api/dev/email-preview?id=${messageId}`)
   console.log(`======================================================\n`)
 
-  // Save audit log entry to logs/emails/
+  // Save audit log entry and HTML file to logs/emails/ for instant browser preview
   try {
     const logsDir = path.resolve(process.cwd(), 'logs', 'emails')
     if (!fs.existsSync(logsDir)) {
@@ -58,6 +59,12 @@ export async function sendEmail({
     }
     const logFilePath = path.join(logsDir, 'sent-emails.jsonl')
     fs.appendFileSync(logFilePath, JSON.stringify(logEntry) + '\n', 'utf-8')
+
+    // Write full HTML file for visual browser viewing
+    const htmlFilePath = path.join(logsDir, `email-${messageId}.html`)
+    const latestHtmlPath = path.join(logsDir, 'latest-email.html')
+    fs.writeFileSync(htmlFilePath, html, 'utf-8')
+    fs.writeFileSync(latestHtmlPath, html, 'utf-8')
   } catch (err) {
     console.warn('Failed to write email audit log to disk:', err)
   }
